@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const port = 8080;
+const method_override = require("method-override");
 const path = require("path");
 const mongoose = require("mongoose");
 
@@ -12,6 +13,7 @@ app.set("view engine" , "ejs");
 
 app.use(express.urlencoded({extends : true}));
 app.use(express.json());
+app.use(method_override("_method"));
 
 database_connected()
     .then(() => console.log("Database Connected"))
@@ -43,13 +45,26 @@ app.get("/listings/:id" , async (req , res) => {
     res.render("./listings/show.ejs" , {listing} );
 })
 // Create Route
-app.post("/listings" , async(req,res) => {
+app.put("/listings" , async(req,res) => {
     const {listing} = req.body;
     await new Listing(listing).save()
         .then(res => console.log(res))
         .catch(err => console.log(err));
     console.log("new listing added to DB :)")
     res.redirect("/listings");
+})
+// EDIT Route
+app.get("/listings/:id/edit" , async(req,res) => {
+    const {id} = req.params;
+    const listing = await Listing.findById(id);
+    res.render("./listings/edit.ejs",{listing});
+})
+//UPDATE Route
+app.put("/listings/:id" ,async(req,res) => {
+    const {id} = req.params;
+    const {listing} = req.body;
+    await Listing.findByIdAndUpdate(id, {...listing});
+    res.redirect(`/listings/${id}`);
 })
 
 
