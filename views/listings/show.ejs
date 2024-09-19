@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<% layout("/layouts/boilerplate.ejs")%>
 <body>
     <h3><%= listing.title %></h3>
     <img src="<%= listing.image.url %>" alt="" style = "height: 300px; width : 300px">
@@ -12,5 +6,9 @@
     <br>
     <br>
     <a href="/listings/<%= listing._id%>/edit">Edit Listing</a>
+    <br>
+    <br>
+    <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
+        <button>Delete</button>
+    </form>
 </body>
-</html>

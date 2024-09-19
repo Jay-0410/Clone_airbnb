@@ -1,21 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wonderlust</title>
-</head>
+<% layout('/layouts/boilerplate.ejs') %>
 <body>
-    <a href="/listings/new">New Listing</a> <br><br>
     <h3>All Listings</h3>
-    <ul>
-    <%for (listing of all_listings) {%>
-        
-        <li>
-            <a href="/listings/<%= listing._id%>"><%= listing.title%></a>
-        </li>
-        
-    <% } %>
-    </ul>
+    <div class="row row-cols-lg-4 row-cols-md-2 row-cols-sm-1">
+        <%for (listing of all_listings) {%>
+            <a class="card-link" href="/listings/<%= listing._id %>">
+                <div class="card col border-bottom">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image">
+                    <div class="card-img-overlay">...</div>
+                    <div class="card-body">
+                    <h5 class="card-text"><%= listing.title %></h5>
+                    <p class="card-text">&#8377;<%= listing.price.toLocaleString("en-IN") %></p>
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
 </body>
-</html>
