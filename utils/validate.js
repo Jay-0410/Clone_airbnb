@@ -13,7 +13,7 @@ let validate = {
         }
     },
     review : (req,res,next) => {
-        console.log("validating review")
+        console.log("Validating review.")
         let {error} = reviewSchema.validate(req.body);
         if(error) {
             throw new ExpressError(400 , error);
@@ -23,4 +23,4 @@ let validate = {
     }
 }
 
-module.exports = {validate};
+module.exports = validate;

@@ -2,7 +2,7 @@
 <body>
     <br>
     <div class="row">
-        <div class="card card-show col-6 offset-2">
+        <div class="card card-show col-6 offset-3">
             <h5 class="card-title mt-3 mb-2"><b><%= listing.title %></b></h5>
             <img src="<%= listing.image.url %>" class="card-img-top" alt="Image">
             <div class="card-body">
@@ -18,7 +18,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-6 offset-2" >
+        <div class="col-6 offset-3" >
             <hr>
             <h3 class="mb-3">Leave a Review</h3>
             <form action="/listings/<%= listing._id %>/reviews" method="post" class="mb-3 needs-validation" novalidate>
