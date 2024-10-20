@@ -6,7 +6,7 @@
             <h5 class="card-title mt-3 mb-2"><b><%= listing.title %></b></h5>
             <img src="<%= listing.image.url %>" class="card-img-top" alt="Image">
             <div class="card-body">
-            <p class="card-text"><%= listing.description %> <br>
+            <p class="card-text"><i>Ownded by <%= listing.owner.username || "Jay"%></i><br><%= listing.description %> <br>
                     &#36;<%= listing.price.toLocaleString("en-CA")%> <br>
                     <%= listing.location %>,&nbsp;<%= listing.country %>
             </p>

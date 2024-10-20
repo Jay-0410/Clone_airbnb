@@ -8,9 +8,11 @@ const Review = require("../models/review");
 //utils
 const validate = require("../utils/validate");
 const wrapAsync = require("../utils/wrapAsync");
+const { isLoggedIn } = require("../middleware");
 
 //CREATE Route
-router.post("/", validate.review , wrapAsync(async (req,res,next) => {
+router.post("/", isLoggedIn, validate.review , wrapAsync(async (req,res,next) => {
+    console.log("Inside reviews");
     let listing = await Listing.findById(req.params.id);
     let newReview = await new Review(req.body.review);
     listing.reviews.push(newReview);
@@ -20,7 +22,7 @@ router.post("/", validate.review , wrapAsync(async (req,res,next) => {
     res.redirect(`/listings/${listing._id}`);
 }));
 //DELETE Route
-router.delete("/:reviewId" , wrapAsync(async(req,res,next) => {
+router.delete("/:reviewId", isLoggedIn , wrapAsync(async(req,res,next) => {
     let {id,reviewId} = req.params;
     await Listing.findByIdAndUpdate(id,{$pull:{reviews:reviewId}});
     await Review.findByIdAndDelete(reviewId);

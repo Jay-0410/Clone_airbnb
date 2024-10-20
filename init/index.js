@@ -17,10 +17,14 @@ function del_data(Model) {
 }
 
 function init_data(Model , model_data){
+    model_data = model_data.map((obj) => {
+        return {...obj , owner : '671296a997860584c48fc3e7'};
+    });
+    console.log(model_data);
     Model.insertMany(model_data)
         .then(res => console.log("Data has been Reinitialised."))
         .catch(err => console.log(err));
 }
 
+del_data(Listing);
 init_data(Listing,listing_data);
-// del_data(Listing);

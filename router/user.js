@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 const passport = require("passport");
+const { saveRedirectUrl } = require("../middleware");
 
 router.get("/signup", (req,res,next) => {
     res.render("users/signup.ejs");
@@ -14,9 +15,13 @@ router.post("/signup", async(req,res,next) => {
             email:email,
             username:username
         }),password);
-        console.log(registeredUser);
-        req.flash("success" , "new user created!");
-        res.redirect("/login");
+        req.login(registeredUser , (err) => {
+            if(err){
+                next(err);
+            }
+            req.flash("success" , "new user created!");
+            res.redirect("/listings");
+        })
     } catch (error) {
         console.log(error);
         if (error.name === "UserExistsError"){
@@ -29,15 +34,27 @@ router.post("/signup", async(req,res,next) => {
     }
 })
 
-router.get("/login", (req,res,next) => {
+router.get("/login",(req,res,next) => {
     res.render("users/login.ejs");
 })
 
 router.post("/login",
-    passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}), 
+    saveRedirectUrl ,
+    passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),
     async(req,res,next) => {
-    req.flash("success" , `Welcome back ${req.body.username}!`);
-    res.redirect("/listings");
+        let redirectUrl = res.locals.redirectUrl || "/listings";
+        console.log(redirectUrl);
+        req.flash("success" , `Welcome back ${req.body.username}!`);
+        res.redirect(redirectUrl);
 });
 
+router.get("/logout" , (req,res,next) => {
+    req.logout( (err) => {
+        if(err) {
+            next(err);
+        }
+        req.flash("success" , "Successfuly logged out!");
+        res.redirect("/listings");
+    })
+});
 module.exports = router;
