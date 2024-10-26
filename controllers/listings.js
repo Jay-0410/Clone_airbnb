@@ -10,8 +10,11 @@ module.exports.renderNewListingForm = (req, res) => {
 };
 
 module.exports.createListing = async(req,res,next) => {
+    let url = req.file.path;
+    let filename = req.file.filename;
     const {listing} = req.body;
     listing.owner = req.user._id;
+    listing.image = {url : url , filename : filename};
     await new Listing(listing).save()
     req.flash("success" , "New listing Created.");
     res.redirect("/listings");
@@ -34,13 +37,20 @@ module.exports.renderEditListingForm = async(req,res,next) => {
         req.flash("error" , "Listing does not exist!");
         res.redirect("/listings");
     }
-    res.render("./listings/edit.ejs",{listing});
+    let originalImageUrl = listing.image.url.replace("/upload" , "/upload/w_250");
+    res.render("./listings/edit.ejs",{listing , originalImageUrl});
 };
 
 module.exports.updateListing = async(req,res,next) => {
     const {id} = req.params;
     const {listing} = req.body;
-    await Listing.findByIdAndUpdate(id, listing);
+    let newLisitng = await Listing.findByIdAndUpdate(id, listing);
+
+    if(typeof req.file !== "undefined") {
+        newLisitng.image = {url : req.file.path , filename : req.file.filename};
+        await newLisitng.save();
+    }
+
     req.flash("success" , "Listing updated!");
     res.redirect(`/listings/${id}`);
 };
