@@ -4,6 +4,7 @@ if(process.env.NODE_ENV != "production"){
 // nodemon app.js  -> cmd
 const express = require("express");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const app = express();
 const port = 8080;
@@ -32,17 +33,32 @@ app.use(express.urlencoded({extended : true}));
 app.use(express.json());
 app.use(method_override("_method"));
 
+const Mongo_URL="mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl = process.env.ATLASDB_URL;
 //Database connection
 database_connected()
     .then(() => console.log("Database Connected"))
     .catch(err => console.log(err));
 async function database_connected() {
-    return await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
+    return await mongoose.connect(dbUrl);
 }
+
+const store = MongoStore.create({
+    mongoUrl : dbUrl,
+    crypto : {
+        secret : process.env.SECRET
+    },
+    touchAfter : 24*60*60
+})
+
+store.on("error" , () => {
+    console.log("Session store error");
+});
 
 //step2
 const sessionOptions = {
-    secret : "mysupersecretcode",
+    store,
+    secret : process.env.SECRET,
     resave : false,
     saveUninitialized : true,
     cookie : {
