@@ -13,8 +13,13 @@ a{
     color: black;
 }
 /* Navbar */
-.navbar{
+.navbar,.navbar-collapse{
     height: 5rem;
+}
+.accordion{
+    overflow: visible;
+    height: 5rem;
+    margin-top: 1.5rem;
 }
 .fa-compass{
     color: #fe424d;
@@ -47,11 +52,22 @@ a{
 }
 /* Cards - lisitng */
 .all-listings{
-    border-width: 1px;
+    /* border-width: 1px;
     border-style: solid;
     border-color: #dee2e6;
     padding: 1rem;
+    border-radius: 1rem; */
+}
+.listing-img{
+    height: 15rem;
+}
+.landing-img {
+    height: 20rem;
+    width: 50%;
     border-radius: 1rem;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
 }
 .new-listing{
     border-width: 1px;
@@ -65,8 +81,8 @@ a{
     margin-bottom: 2rem;
 }
 .card-listing{
-    width: 18rem;
-    height: 25rem;
+    width: 15rem;
+    height: 20rem;
     border: none;
     border-radius: 1rem;  
     background-color: rgb(242, 242, 241);  

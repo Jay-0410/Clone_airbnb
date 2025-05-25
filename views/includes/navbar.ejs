@@ -1,24 +1,52 @@
 <nav class="navbar navbar-expand-md bg-body-tertiary sticky-top border-bottom">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/"><i class="fa-regular fa-compass"></i></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="/">Home</a>
-          <a class="nav-link" href="/listings">Listings</a>
-          <a class="nav-link" href="/listings/new">Add New</a>
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><i class="fa-regular fa-compass"></i></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/listings">Listings</a>
+        <a class="nav-link" href="/listings/new">Add New</a>
+      </div>
+      <div class="navbar-nav ms-auto">
+        <% if( !loggedInUser ) {%>
+        <a class="nav-link" href="/signup">Sign up</a>
+        <a class="nav-link" href="/login">Log in</a>
+        <% } %> <% if( loggedInUser ) {%>
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#panelsStayOpen-collapseOne"
+                aria-expanded="false"
+                aria-controls="panelsStayOpen-collapseOne"
+              >
+                <%= loggedInUser.username %>   
+              </button>
+            </h2>
+            <div
+              id="panelsStayOpen-collapseOne"
+              class="accordion-collapse collapse"
+            >
+              <div class="accordion-body">
+                <a class="nav-link" href="/logout">logout</a>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="navbar-nav ms-auto">
-          <% if( !loggedInUser ) {%> 
-          <a class="nav-link" href="/signup">Sign up</a>
-          <a class="nav-link" href="/login">Log in</a>
-          <% } %>
-          <% if( loggedInUser ) {%> 
-          <a class="nav-link" href="/logout">Log out</a>
-          <% } %>
-        </div>
+        
+        <% } %>
       </div>
     </div>
-  </nav>
+  </div>
+</nav>
