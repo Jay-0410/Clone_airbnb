@@ -17,9 +17,9 @@
                     <%= listing.location %>,&nbsp;<%= listing.country %>
             </p>
             <% if (loggedInUser && loggedInUser._id.equals(listing.owner._id)) { %>
-                <form action="/listings/<%= listing._id %>?_method=DELETE" method="post">
+                <form action="<%= baseUrl %>/listings/<%= listing._id %>?_method=DELETE" method="post">
                     <button class="btn btn-dark cancel-btn">Delete</button>
-                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary submit-btn"> Edit</a>
+                    <a href="<%= baseUrl %>/listings/<%= listing._id %>/edit" class="btn btn-primary submit-btn"> Edit</a>
                 </form>
                 <% } %>
             </div>
@@ -30,7 +30,7 @@
         <div class="col-6 offset-3" >
              
                 <h3 class="mb-3">Leave a Review</h3>
-                <form action="/listings/<%= listing._id %>/reviews" method="post" class="mb-3 needs-validation" novalidate>
+                <form action="<%= baseUrl %>/listings/<%= listing._id %>/reviews" method="post" class="mb-3 needs-validation" novalidate>
                 <div class="mb-2">
                     <label for="rating" class="form-label">Rating</label>
                     <fieldset class="starability-slot">
@@ -72,7 +72,7 @@
                         <p class="card-text"><%= review.comment %></p>
                         <h6 class="card-subtitle mb-2 text-body-secondary">   
                             <% if (loggedInUser && review.author._id.equals(loggedInUser._id)) { %> 
-                                <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+                                <form action="<%= baseUrl %>/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
                                     <button class="btn btn-dark">Delete</button>
                                 </form>
                             <% } %>

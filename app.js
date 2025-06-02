@@ -7,6 +7,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const app = express();
+app.locals.baseUrl = '/wonderlust';
 const port = 8080;
 const method_override = require("method-override");
 const path = require("path");
@@ -88,13 +89,13 @@ app.use((req,res,next) => {
 })
 
 //All Routes
-app.get("/" , (req,res) => {
+app.get("/wonderlust" , (req,res) => {
     res.render("./listings/home.ejs");
 }) 
 
-app.use("/", userRouter)
-app.use("/listings" , listingRouter);
-app.use("/listings/:id/reviews" , reviewRouter);
+app.use(`${app.locals.baseUrl}/`, userRouter)
+app.use(`${app.locals.baseUrl}/listings` , listingRouter);
+app.use(`${app.locals.baseUrl}/listings/:id/reviews` , reviewRouter);
 
 app.all('*' , (req, res, next) => {
     next( new ExpressError(500 , 'Page not found!'));

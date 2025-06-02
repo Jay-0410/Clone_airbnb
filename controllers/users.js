@@ -5,6 +5,7 @@ module.exports.renderSignupForm = (req,res,next) => {
 };
 
 module.exports.signupUser = async(req,res,next) => {
+    const baseUrl = req.app.locals.baseUrl || '';
     try{
         let {email, username,password} = req.body;
         let registeredUser = await User.register(new User({
@@ -16,36 +17,43 @@ module.exports.signupUser = async(req,res,next) => {
                 next(err);
             }
             req.flash("success" , "new user created!");
-            res.redirect("/listings");
+            res.redirect(`${baseUrl}/listings`);
         })
     } catch (error) {
         console.log(error);
         if (error.name === "UserExistsError"){
             req.flash("error","A user already exists with given username.");
-            res.redirect("/signup");
+            res.redirect(`${baseUrl}/signup`);
         } else{
             req.flash("error", "Oh dear, something went wrong. Call Jay or you are going to died.")
-            res.redirect("/signup");
+            res.redirect(`${baseUrl}/signup`);
         }
     }
 }
 
 module.exports.renderLoginForm = (req,res,next) => {
-    res.render("users/login.ejs");
+    const baseUrl = req.app.locals.baseUrl || '';
+    res.render("users/login.ejs", {baseUrl});
 };
 
 module.exports.loginUser = async(req,res,next) => {
-    let redirectUrl = res.locals.redirectUrl || "/listings";
-    req.flash("success" , `Welcome back ${req.body.username}!`);
+    const baseUrl = req.app.locals.baseUrl || '';
+    console.log(res.locals.redirectUrl);
+    if(!res.locals.redirectUrl) {
+        res.locals.redirectUrl = `${baseUrl}/listings`;
+    }
+    let redirectUrl = `${res.locals.redirectUrl}`;
+        req.flash("success" , `Welcome back ${req.body.username}!`);
     res.redirect(redirectUrl);
 };
 
 module.exports.logoutUser = (req,res,next) => {
+    const baseUrl = req.app.locals.baseUrl || '';
     req.logout( (err) => {
         if(err) {
             next(err);
         }
         req.flash("success" , "Successfuly logged out!");
-        res.redirect("/listings");
+        res.redirect(`${baseUrl}/listings`);
     })
 };

@@ -11,14 +11,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/listings">Listings</a>
-        <a class="nav-link" href="/listings/new">Add New</a>
+        <a class="nav-link" href="<%= baseUrl %>">Home</a>
+        <a class="nav-link" href="<%= baseUrl %>/listings">Listings</a>
+        <a class="nav-link" href="<%= baseUrl %>/listings/new">Add New</a>
       </div>
       <div class="navbar-nav ms-auto">
         <% if( !loggedInUser ) {%>
-        <a class="nav-link" href="/signup">Sign up</a>
-        <a class="nav-link" href="/login">Log in</a>
+        <a class="nav-link" href="<%= baseUrl %>/signup">Sign up</a>
+        <a class="nav-link" href="<%= baseUrl %>/login">Log in</a>
         <% } %> <% if( loggedInUser ) {%>
         <div class="accordion" id="accordionPanelsStayOpenExample">
           <div class="accordion-item">
@@ -39,7 +39,7 @@
               class="accordion-collapse collapse"
             >
               <div class="accordion-body">
-                <a class="nav-link" href="/logout">logout</a>
+                <a class="nav-link" href="<%= baseUrl %>/logout">logout</a>
               </div>
             </div>
           </div>

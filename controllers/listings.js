@@ -6,16 +6,18 @@ const geocodingClient = mbxGeocoding({accessToken : mapToken});
 
 
 module.exports.index = async (req , res,next) => {
+    const baseUrl = req.app.locals.baseUrl || '';
     const all_listings = await Listing.find({});
-    res.render("./listings/index.ejs", {all_listings});
+    res.render("./listings/index.ejs", {all_listings, baseUrl});
 };
 
 module.exports.renderNewListingForm = (req, res) => {
-    res.render("./listings/new.ejs");
+    const baseUrl = req.app.locals.baseUrl || '';
+    res.render("./listings/new.ejs", {baseUrl});
 };
 
 module.exports.createListing = async(req,res,next) => {
-
+    const baseUrl = req.app.locals.baseUrl || '';
     const geoData = await geocodingClient.forwardGeocode({
         query : req.body.listing.location,
         limit : 1
@@ -27,34 +29,38 @@ module.exports.createListing = async(req,res,next) => {
     listing.owner = req.user._id;
     listing.image = {url : url , filename : filename};
     listing.geometry = geoData.body.features[0].geometry;
+
     let savedListing = await new Listing(listing).save();
     console.log(savedListing);
     req.flash("success" , "New listing Created.");
-    res.redirect("/listings");
+    res.redirect(`${baseUrl}/listings`);
 };
 
 module.exports.showListing = async (req , res,next) => {
+    const baseUrl = req.app.locals.baseUrl || '';
     const {id} = req.params;
     const listing = await Listing.findById(id).populate({path : "reviews" , populate : {path : "author"}}).populate("owner");
     if(!listing || listing === "null") {
         req.flash("error" , "Listing does not exist!");
-        res.redirect("/listings");
+        res.redirect(`${baseUrl}/listings`);
     }
-    res.render("./listings/show.ejs" , {listing} );
+    res.render("./listings/show.ejs" , {listing, baseUrl});
 };
 
 module.exports.renderEditListingForm = async(req,res,next) => {
+    const baseUrl = req.app.locals.baseUrl || '';
     const {id} = req.params;
     const listing = await Listing.findById(id);
     if(!listing || listing === "null") {
         req.flash("error" , "Listing does not exist!");
-        res.redirect("/listings");
+        res.redirect(`${baseUrl}/listings`);
     }
     let originalImageUrl = listing.image.url.replace("/upload" , "/upload/w_250");
-    res.render("./listings/edit.ejs",{listing , originalImageUrl});
+    res.render("./listings/edit.ejs",{listing , originalImageUrl, baseUrl: req.app.locals.baseUrl || ''});
 };
 
 module.exports.updateListing = async(req,res,next) => {
+    const baseUrl = req.app.locals.baseUrl || '';
     const {id} = req.params;
     const {listing} = req.body;
     let newLisitng = await Listing.findByIdAndUpdate(id, listing);
@@ -65,12 +71,13 @@ module.exports.updateListing = async(req,res,next) => {
     }
 
     req.flash("success" , "Listing updated!");
-    res.redirect(`/listings/${id}`);
+    res.redirect(`${baseUrl}/listings/${id}`);
 };
 
 module.exports.deleteListing = async(req,res,next) => {
+    const baseUrl = req.app.locals.baseUrl || '';
     const{id} = req.params;
     await Listing.findByIdAndDelete(id)
     req.flash("success" , "Listing deleted!");
-    res.redirect("/listings");
+    res.redirect(`${baseUrl}/listings`);
 };
