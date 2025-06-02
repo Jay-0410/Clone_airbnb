@@ -5,6 +5,7 @@ const { saveRedirectUrl } = require("../middleware");
 const {renderSignupForm, signupUser, renderLoginForm,loginUser,logoutUser} = require("../controllers/users");
 const wrapAsync = require("../utils/wrapAsync");
 
+
 router
     .route("/signup")
     .get(renderSignupForm)
@@ -15,7 +16,7 @@ router
     .get(renderLoginForm)
     .post(
         saveRedirectUrl ,
-        passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}),
+        passport.authenticate("local",{failureRedirect:`/wonderlust/login`,failureFlash:true}),
         loginUser    
     )
 

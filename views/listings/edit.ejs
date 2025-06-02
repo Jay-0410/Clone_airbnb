@@ -4,7 +4,7 @@
     <div class="row"> 
     <div class="col-8 offset-2">
         <h3>Edit : <%= listing.title %></h3>
-        <form method="post" action="/listings/<%= listing._id %>?_method=PUT" class="needs-validation" novalidate enctype="multipart/form-data">
+        <form method="post" action="<%= baseUrl %>/listings/<%= listing._id %>?_method=PUT" class="needs-validation" novalidate enctype="multipart/form-data">
             <div class="mb-2">
                 <label for="title" class="form-label" >Title : </label>
                 <input id="title" type="text" class="form-control" name="listing[title]" value="<%= listing.title %>" required>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="mb-2">
-                <a href="/listings/<%= listing._id %>" class="btn btn-dark cancel-btn">Cancel</a> &nbsp; &nbsp;
+                <a href="<%= baseUrl %>/listings/<%= listing._id %>" class="btn btn-dark cancel-btn">Cancel</a> &nbsp; &nbsp;
                 <button class="btn btn-primary submit-btn" type="submit">Edit</button>
             </div>
         </form>
