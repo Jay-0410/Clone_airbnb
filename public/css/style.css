@@ -14,7 +14,7 @@ a{
 }
 /* Navbar */
 .navbar,.navbar-collapse{
-    height: 5rem;
+    /* height: 5rem; */
 }
 .accordion{
     overflow: visible;
